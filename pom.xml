@@ -18,6 +18,14 @@
 
     <name>Pipeline Doctor Core Plugin</name>
     <description>Core interfaces and extension points for Pipeline Doctor diagnostic system</description>
+    
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <jenkins.version>2.440.3</jenkins.version>
