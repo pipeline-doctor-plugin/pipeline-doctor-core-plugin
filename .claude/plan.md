@@ -21,9 +21,9 @@
   - Budget controls and rate limiting
 - Set up extension points for Jenkins integration
 
-## Phase 2: Three-Tier Analysis Architecture
+## Phase 2: Extension Point Architecture
 
-### 2.1 Pattern Matching Engine (Tier 1)
+### 2.1 Core Plugin - Pattern Matching Engine
 - Create `LogPatternMatcher` with bundled patterns for:
   - NetworkPolicy issues
   - Debian archive problems
@@ -35,35 +35,37 @@
 - Target: <10ms response time for instant feedback
 - Implement pattern priority and confidence scoring
 
-### 2.2 MCP Integration Engine (Tier 2)
-- Create `MCPAnalyzer` for user-configured analysis servers
-- Implement MCP protocol client with:
-  - Server discovery and connection management
-  - Request/response handling
-  - Error handling and fallback strategies
-- Target: 1-5s response time for custom analysis
-- Support per-job/folder MCP configuration
+### 2.2 Extension Points Design
+- Create `DiagnosticAnalyzer` extension point for external analysis:
+  - Interface for MCP, custom AI, and other analyzers
+  - Async analysis with CompletableFuture
+  - Per-job/folder configuration support
+- Create `SolutionEnhancer` extension point for solution enhancement:
+  - Interface for LLM providers (OpenAI, Claude, etc.)
+  - Budget and rate limiting support
+  - Data sanitization hooks
 
-### 2.3 LLM Enhancement Engine (Tier 3)
-- Implement Strategy pattern for LLM providers:
-  - `OpenAIProvider`
-  - `ClaudeProvider` (direct API and AWS Bedrock)
-  - `CustomEndpointProvider`
-- Create `LLMAnalyzer` with:
-  - Circuit breaker for fault tolerance
-  - Token tracking and budget management
-  - Data sanitization and security controls
-- Target: 2-10s response time for detailed explanations
+### 2.3 Provider Plugin Examples
+- Design example structure for provider plugins:
+  - `pipeline-doctor-mcp`: MCP protocol implementation
+  - `pipeline-doctor-openai`: OpenAI GPT integration
+  - `pipeline-doctor-claude`: Anthropic Claude integration
+  - `pipeline-doctor-ollama`: Local Ollama support
+- Each provider manages its own:
+  - Global configuration
+  - API credentials
+  - Rate limiting and fault tolerance
 
 ## Phase 3: Diagnostic Engine Core
 
 ### 3.1 Analysis Orchestration
-- Create `DiagnosticEngine` to coordinate three-tier analysis
+- Create `DiagnosticEngine` to coordinate analysis with extension points
 - Implement analysis flow:
   1. Pattern matching (always enabled)
-  2. MCP analysis (if configured)
-  3. LLM enhancement (if enabled and budget available)
-- Add configuration for enabling/disabling each tier
+  2. External analyzers via DiagnosticAnalyzer extension point
+  3. Solution enhancement via SolutionEnhancer extension point
+- Extension point discovery and management
+- Parallel execution of multiple analyzers
 
 ### 3.2 Context Enrichment
 - Gather additional context:
@@ -167,27 +169,25 @@
 
 ### Key Classes Structure
 ```
+# Core Plugin
 src/main/java/io/jenkins/plugins/pipelinedoctor/
 ├── PipelineDoctorPlugin.java
-├── analyzers/
+├── api/                               # Extension points
+│   ├── DiagnosticAnalyzer.java        # External analyzer interface
+│   ├── SolutionEnhancer.java          # Solution enhancer interface
+│   ├── AnalysisContext.java           # Context for analyzers
+│   └── EnhancementContext.java        # Context for enhancers
+├── core/
 │   ├── DiagnosticEngine.java          # Main orchestration
-│   ├── PatternMatcher.java            # Tier 1: Built-in patterns
-│   ├── MCPAnalyzer.java               # Tier 2: MCP integration
-│   └── LLMAnalyzer.java               # Tier 3: LLM enhancement
-├── mcp/
-│   ├── MCPClient.java                 # MCP protocol client
-│   ├── MCPConnection.java             # Connection management
-│   └── MCPMessage.java                # Protocol messages
-├── llm/
-│   ├── LLMProvider.java               # Strategy interface
-│   ├── OpenAIProvider.java            # OpenAI implementation
-│   ├── ClaudeProvider.java            # Claude implementation
-│   ├── LLMCircuitBreaker.java         # Fault tolerance
-│   └── LLMBudgetManager.java          # Cost control
+│   ├── PatternMatcher.java            # Built-in pattern matching
+│   └── ExtensionManager.java          # Extension point management
+├── patterns/
+│   ├── PatternLibrary.java            # Pattern registry
+│   └── patterns/                      # Individual pattern implementations
 ├── solutions/
 │   ├── SolutionEngine.java            # Solution matching
 │   ├── SolutionTemplate.java          # Base template
-│   └── providers/                     # Specific providers
+│   └── providers/                     # Built-in solution providers
 ├── learning/
 │   ├── LearningEngine.java            # Continuous improvement
 │   └── FeedbackCollector.java         # Admin feedback
@@ -197,13 +197,21 @@ src/main/java/io/jenkins/plugins/pipelinedoctor/
 ├── steps/
 │   └── DiagnoseIssuesStep.java
 ├── config/
-│   ├── GlobalConfiguration.java       # MCP/LLM settings
 │   └── JobConfiguration.java          # Per-job settings
 └── models/
-    ├── BuildDiagnostic.java           # Updated models
+    ├── BuildDiagnostic.java
     ├── DiagnosticIssue.java
     ├── Solution.java
-    └── AnalysisContext.java
+    └── DiagnosticResult.java
+
+# Example Provider Plugin Structure
+pipeline-doctor-mcp/
+├── src/main/java/
+│   └── io/jenkins/plugins/pipelinedoctor/mcp/
+│       ├── MCPDiagnosticAnalyzer.java # Implements DiagnosticAnalyzer
+│       ├── MCPClient.java             # MCP protocol client
+│       ├── MCPConfiguration.java      # Global config
+│       └── MCPJobProperty.java        # Per-job config
 ```
 
 ### Dependencies

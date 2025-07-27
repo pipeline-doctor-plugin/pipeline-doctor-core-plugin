@@ -1,0 +1,121 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <l:layout title="Pipeline Doctor Analysis" xmlns:l="/lib/layout">
+    <st:include page="sidepanel.jelly" it="${it.run}" />
+    <l:main-panel>
+      <h1>Pipeline Doctor Analysis</h1>
+      
+      <j:if test="${it.hasResults()}">
+        <div class="jenkins-alert jenkins-alert-info">
+          <p>Found ${it.resultCount} diagnostic result(s) for this build.</p>
+        </div>
+        
+        <!-- Summary by severity -->
+        <h2>Summary</h2>
+        <table class="jenkins-table">
+          <thead>
+            <tr>
+              <th>Severity</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <j:forEach var="severity" items="${['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']}">
+              <j:set var="count" value="${it.getCountBySeverity(severity)}" />
+              <j:if test="${count > 0}">
+                <tr>
+                  <td>
+                    <span class="jenkins-badge jenkins-badge-${severity.toLowerCase()}">${severity}</span>
+                  </td>
+                  <td>${count}</td>
+                </tr>
+              </j:if>
+            </j:forEach>
+          </tbody>
+        </table>
+        
+        <!-- Detailed results -->
+        <h2>Diagnostic Results</h2>
+        <j:forEach var="result" items="${it.results}">
+          <div class="jenkins-section">
+            <h3>
+              <span class="jenkins-badge jenkins-badge-${result.severity.toString().toLowerCase()}">${result.severity}</span>
+              ${result.summary}
+              <small>(${result.confidence}% confidence)</small>
+            </h3>
+            
+            <p><strong>Category:</strong> ${result.category}</p>
+            <p><strong>Provider:</strong> ${result.providerId}</p>
+            
+            <j:if test="${result.description != null}">
+              <p><strong>Description:</strong> ${result.description}</p>
+            </j:if>
+            
+            <!-- Solutions -->
+            <j:if test="${!result.solutions.isEmpty()}">
+              <h4>Suggested Solutions</h4>
+              <j:forEach var="solution" items="${result.solutions}">
+                <div class="jenkins-subsection">
+                  <h5>${solution.title} <small>(priority: ${solution.priority})</small></h5>
+                  
+                  <j:if test="${solution.description != null}">
+                    <p>${solution.description}</p>
+                  </j:if>
+                  
+                  <j:if test="${!solution.steps.isEmpty()}">
+                    <ol>
+                      <j:forEach var="step" items="${solution.steps}">
+                        <li>
+                          ${step.description}
+                          <j:if test="${step.hasCommand()}">
+                            <br/>
+                            <code>${step.command}</code>
+                          </j:if>
+                          <j:if test="${step.optional}">
+                            <span class="jenkins-badge jenkins-badge-info">Optional</span>
+                          </j:if>
+                        </li>
+                      </j:forEach>
+                    </ol>
+                  </j:if>
+                  
+                  <!-- Examples -->
+                  <j:if test="${!solution.examples.isEmpty()}">
+                    <h6>Examples</h6>
+                    <j:forEach var="example" items="${solution.examples.entrySet()}">
+                      <p><strong>${example.key}:</strong></p>
+                      <pre><code>${example.value}</code></pre>
+                    </j:forEach>
+                  </j:if>
+                </div>
+              </j:forEach>
+            </j:if>
+            
+            <!-- Metadata -->
+            <j:if test="${!result.metadata.isEmpty()}">
+              <details>
+                <summary>Additional Information</summary>
+                <table class="jenkins-table">
+                  <j:forEach var="entry" items="${result.metadata.entrySet()}">
+                    <tr>
+                      <td><strong>${entry.key}</strong></td>
+                      <td>${entry.value}</td>
+                    </tr>
+                  </j:forEach>
+                </table>
+              </details>
+            </j:if>
+          </div>
+        </j:forEach>
+        
+      </j:if>
+      
+      <j:if test="${!it.hasResults()}">
+        <div class="jenkins-alert jenkins-alert-success">
+          <p>No diagnostic issues found for this build.</p>
+        </div>
+      </j:if>
+      
+    </l:main-panel>
+  </l:layout>
+</j:jelly>

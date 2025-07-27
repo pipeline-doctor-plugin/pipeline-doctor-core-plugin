@@ -1,0 +1,6 @@
+<?jelly escape-by-default='true'?>
+<div>
+  This plugin provides core diagnostic capabilities for Jenkins pipeline builds.
+  It serves as the foundation for diagnostic analysis and allows other plugins to 
+  provide specialized diagnostic providers for pattern matching, LLM analysis, and more.
+</div>
