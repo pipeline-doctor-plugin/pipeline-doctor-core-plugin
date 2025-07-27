@@ -1,0 +1,434 @@
+/* Pipeline Doctor Plugin CSS Styles */
+
+.diagnostic-summary {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.summary-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.result-count {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+.severity-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.severity-badge.critical {
+    background-color: #dc3545;
+    color: white;
+}
+
+.severity-badge.high {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.severity-badge.medium {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.severity-badge.low {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.no-issues {
+    display: flex;
+    align-items: center;
+    color: #28a745;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.diagnostic-filters {
+    margin: 16px 0;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background: #e9ecef;
+}
+
+.filter-btn.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.diagnostic-results {
+    margin: 16px 0;
+}
+
+.diagnostic-item {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+
+.diagnostic-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.diagnostic-item.severity-critical {
+    border-left: 4px solid #dc3545;
+}
+
+.diagnostic-item.severity-high {
+    border-left: 4px solid #fd7e14;
+}
+
+.diagnostic-item.severity-medium {
+    border-left: 4px solid #ffc107;
+}
+
+.diagnostic-item.severity-low {
+    border-left: 4px solid #17a2b8;
+}
+
+.diagnostic-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    cursor: pointer;
+}
+
+.severity-icon {
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.diagnostic-title {
+    flex-grow: 1;
+}
+
+.diagnostic-title h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.diagnostic-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: #666;
+    flex-wrap: wrap;
+}
+
+.diagnostic-meta .category {
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.diagnostic-actions {
+    margin-left: 12px;
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.expand-btn:hover {
+    background: #e9ecef;
+}
+
+.diagnostic-details {
+    border-top: 1px solid #e9ecef;
+    padding: 16px;
+}
+
+.diagnostic-details h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.diagnostic-details .description {
+    margin-bottom: 16px;
+}
+
+.diagnostic-details .description p {
+    margin: 8px 0;
+    line-height: 1.5;
+    color: #555;
+}
+
+.solutions {
+    margin-bottom: 16px;
+}
+
+.solution {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.solution-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.solution-header h5 {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.solution-header .priority {
+    font-size: 12px;
+    color: #666;
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.solution-description {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.4;
+}
+
+.solution-steps {
+    margin-top: 12px;
+}
+
+.solution-steps h6 {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+}
+
+.solution-steps ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.solution-steps li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.required-step {
+    font-weight: normal;
+}
+
+.optional-step {
+    color: #666;
+    font-style: italic;
+}
+
+.optional-label {
+    font-size: 11px;
+    background: #17a2b8;
+    color: white;
+    padding: 1px 4px;
+    border-radius: 2px;
+    margin-left: 6px;
+    font-style: normal;
+}
+
+.command-block {
+    background: #f1f3f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.command-block code {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    color: #333;
+    background: none;
+    padding: 0;
+}
+
+.copy-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.copy-btn:hover {
+    background: #0056b3;
+}
+
+.affected-files {
+    margin-top: 16px;
+}
+
+.affected-files h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.affected-files ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.affected-files li {
+    margin-bottom: 4px;
+}
+
+.affected-files code {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+    background: #f1f3f4;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+.diagnostic-footer {
+    margin: 24px 0;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.diagnostic-footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.diagnostic-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Jenkins compatibility overrides */
+.jenkins-badge.jenkins-badge-critical {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.jenkins-badge.jenkins-badge-high {
+    background-color: #fd7e14 !important;
+    color: white !important;
+}
+
+.jenkins-badge.jenkins-badge-medium {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+.jenkins-badge.jenkins-badge-low {
+    background-color: #17a2b8 !important;
+    color: white !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .diagnostic-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .diagnostic-meta {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .solution-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .command-block {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .summary-stats {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .diagnostic-filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Animation for expand/collapse */
+.diagnostic-details {
+    transition: all 0.3s ease-in-out;
+}
+
+.diagnostic-item.collapsed .diagnostic-details {
+    display: none;
+}
+
+.diagnostic-item.expanded .diagnostic-details {
+    display: block;
+}
+
+/* Hide filtered items */
+.diagnostic-item.filtered-out {
+    display: none !important;
+}

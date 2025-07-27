@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pipeline Doctor Configuration Help</title>
+</head>
+<body>
+    <div>
+        <h2>Pipeline Doctor Configuration</h2>
+        
+        <h3>Overview</h3>
+        <p>Pipeline Doctor provides automated diagnostic analysis for Jenkins builds. It examines build logs, 
+           configuration, and artifacts to identify common issues and suggest solutions.</p>
+        
+        <h3>Configuration Options</h3>
+        
+        <h4>Enable by Default</h4>
+        <p>When enabled, all new jobs will automatically include Pipeline Doctor analysis. 
+           Existing jobs can still opt-in or opt-out individually through their configuration.</p>
+        
+        <h4>Auto-analyze Builds</h4>
+        <p>When enabled, Pipeline Doctor will automatically analyze builds when they complete. 
+           If disabled, analysis must be triggered manually.</p>
+        
+        <h4>Maximum Results per Build</h4>
+        <p>Limits the number of diagnostic results displayed per build to prevent UI overload. 
+           Results are prioritized by severity and confidence level.</p>
+        
+        <h4>Analysis Timeout</h4>
+        <p>Maximum time allowed for diagnostic analysis. If analysis takes longer than this timeout, 
+           it will be terminated to prevent resource exhaustion.</p>
+        
+        <h4>Excluded Job Patterns</h4>
+        <p>Regular expression patterns for job names that should be excluded from analysis. 
+           This is useful for excluding test jobs, temporary jobs, or jobs that don't benefit from analysis.</p>
+        <p><strong>Examples:</strong></p>
+        <ul>
+            <li><code>.*-test$</code> - Exclude jobs ending with "-test"</li>
+            <li><code>temp/.*</code> - Exclude all jobs in the "temp" folder</li>
+            <li><code>(nightly|weekly)-.*</code> - Exclude jobs starting with "nightly-" or "weekly-"</li>
+        </ul>
+        
+        <h4>Enable Detailed Logging</h4>
+        <p>Enables verbose logging for diagnostic analysis. This is useful for debugging issues with 
+           the plugin but will increase log volume significantly.</p>
+        
+        <h3>Plugin Architecture</h3>
+        <p>Pipeline Doctor uses an extensible plugin architecture:</p>
+        <ul>
+            <li><strong>Core Plugin:</strong> Provides base interfaces and UI</li>
+            <li><strong>Diagnostic Providers:</strong> Individual plugins that analyze specific types of issues</li>
+            <li><strong>Extension Points:</strong> Allow custom diagnostic logic</li>
+        </ul>
+        
+        <h3>Performance Considerations</h3>
+        <ul>
+            <li>Analysis runs after build completion, not during build execution</li>
+            <li>Analysis is performed asynchronously to avoid blocking Jenkins</li>
+            <li>Results are cached to improve UI responsiveness</li>
+            <li>Resource usage scales with the number of enabled diagnostic providers</li>
+        </ul>
+        
+        <h3>Troubleshooting</h3>
+        <p>If you encounter issues:</p>
+        <ol>
+            <li>Enable detailed logging and check Jenkins logs</li>
+            <li>Verify that diagnostic provider plugins are installed and enabled</li>
+            <li>Check that jobs are not excluded by patterns</li>
+            <li>Ensure adequate timeout settings for complex builds</li>
+        </ol>
+    </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    
+    <f:section title="Pipeline Doctor Configuration">
+        
+        <f:entry title="Enable by Default" field="enabledByDefault" 
+                 description="Enable Pipeline Doctor analysis for all new jobs by default">
+            <f:checkbox />
+        </f:entry>
+        
+        <f:entry title="Auto-analyze Builds" field="autoAnalyzeBuilds"
+                 description="Automatically run diagnostic analysis when builds complete">
+            <f:checkbox />
+        </f:entry>
+        
+        <f:entry title="Maximum Results per Build" field="maxResultsPerBuild"
+                 description="Maximum number of diagnostic results to display per build (1-1000)">
+            <f:number clazz="setting-input" min="1" max="1000" step="1" />
+        </f:entry>
+        
+        <f:entry title="Analysis Timeout (seconds)" field="analysisTimeoutSeconds"
+                 description="Maximum time to wait for diagnostic analysis to complete (10-3600 seconds)">
+            <f:number clazz="setting-input" min="10" max="3600" step="1" />
+        </f:entry>
+        
+        <f:entry title="Excluded Job Patterns" field="excludedJobPatterns"
+                 description="Regular expression patterns for job names to exclude from analysis (one per line or comma-separated)">
+            <f:textarea rows="3" cols="50" />
+        </f:entry>
+        
+        <f:entry title="Enable Detailed Logging" field="enableDetailedLogging"
+                 description="Enable verbose logging for diagnostic analysis (useful for debugging)">
+            <f:checkbox />
+        </f:entry>
+        
+        <f:block>
+            <div style="margin-top: 20px; padding: 15px; background-color: #f0f8ff; border: 1px solid #b0d4f1; border-radius: 4px;">
+                <h4 style="margin-top: 0;">About Pipeline Doctor</h4>
+                <p>Pipeline Doctor analyzes Jenkins builds to identify common issues and suggest solutions. 
+                   It provides extensible diagnostic capabilities through a plugin architecture.</p>
+                <p><strong>Plugin Features:</strong></p>
+                <ul>
+                    <li>Automatic build failure analysis</li>
+                    <li>Configurable diagnostic providers</li>
+                    <li>Interactive web interface for results</li>
+                    <li>Extensible through additional diagnostic plugins</li>
+                </ul>
+                <p><strong>Performance Impact:</strong> Pipeline Doctor runs analysis after build completion, 
+                   so it does not affect build execution time. Analysis is performed asynchronously.</p>
+            </div>
+        </f:block>
+        
+        <f:block>
+            <div style="margin-top: 15px; padding: 15px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px;">
+                <h4 style="margin-top: 0;">Configuration Tips</h4>
+                <ul>
+                    <li><strong>Excluded Job Patterns:</strong> Use regex patterns like <code>.*-test$</code> to exclude test jobs, 
+                        or <code>folder1/.*</code> to exclude all jobs in a specific folder.</li>
+                    <li><strong>Max Results:</strong> Keep this reasonable (50-100) to avoid overwhelming the UI.</li>
+                    <li><strong>Analysis Timeout:</strong> Increase for complex builds, but be mindful of resource usage.</li>
+                    <li><strong>Detailed Logging:</strong> Only enable for troubleshooting as it increases log volume.</li>
+                </ul>
+            </div>
+        </f:block>
+        
+    </f:section>
+    
+</j:jelly>
