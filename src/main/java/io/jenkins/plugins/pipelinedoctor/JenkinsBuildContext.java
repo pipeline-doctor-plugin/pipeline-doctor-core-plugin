@@ -1,7 +1,9 @@
 package io.jenkins.plugins.pipelinedoctor;
 
 import hudson.EnvVars;
+import hudson.model.Computer;
 import hudson.model.EnvironmentSpecific;
+import hudson.model.Executor;
 import hudson.model.Node;
 import hudson.model.Result;
 import hudson.model.Run;
@@ -88,13 +90,17 @@ public class JenkinsBuildContext implements BuildContext {
         
         try {
             // Get build environment variables
-            EnvVars envVars = run.getEnvironment(null);
+            EnvVars envVars = run.getEnvironment(hudson.model.TaskListener.NULL);
             if (envVars != null) {
                 env.putAll(envVars);
             }
             
             // Add node-specific environment variables if available
-            Node node = run.getExecutor() != null ? run.getExecutor().getOwner().getNode() : null;
+            Node node = null;
+            Executor executor = run.getExecutor();
+            if (executor != null && executor.getOwner() != null) {
+                node = executor.getOwner().getNode();
+            }
             if (node != null) {
                 DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = node.getNodeProperties();
                 for (NodeProperty<?> property : properties) {
@@ -126,9 +132,15 @@ public class JenkinsBuildContext implements BuildContext {
     
     private String extractNodeName(Run<?, ?> run) {
         try {
-            if (run.getExecutor() != null && run.getExecutor().getOwner() != null) {
-                Node node = run.getExecutor().getOwner().getNode();
-                return node != null ? node.getNodeName() : "unknown";
+            Executor executor = run.getExecutor();
+            if (executor != null) {
+                Computer computer = executor.getOwner();
+                if (computer != null) {
+                    Node node = computer.getNode();
+                    if (node != null) {
+                        return node.getNodeName();
+                    }
+                }
             }
         } catch (Exception e) {
             LOGGER.fine("Could not extract node name: " + e.getMessage());

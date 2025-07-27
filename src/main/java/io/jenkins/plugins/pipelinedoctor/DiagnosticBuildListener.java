@@ -5,6 +5,7 @@ import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.model.listeners.RunListener;
+import jenkins.model.Jenkins;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -52,7 +53,13 @@ public class DiagnosticBuildListener extends RunListener<Run<?, ?>> {
                                                " (confidence: " + result1.getConfidence() + "%)");
                 }
                 
-                listener.getLogger().println("View detailed analysis at: " + run.getAbsoluteUrl() + "pipeline-doctor/");
+                // Only show URL if Jenkins root URL is configured
+                Jenkins jenkins = Jenkins.getInstanceOrNull();
+                if (jenkins != null && jenkins.getRootUrl() != null) {
+                    listener.getLogger().println("View detailed analysis at: " + run.getAbsoluteUrl() + "pipeline-doctor/");
+                } else {
+                    listener.getLogger().println("View detailed analysis in the build page under 'Pipeline Doctor'");
+                }
                 listener.getLogger().println("===============================");
                 
             } else {

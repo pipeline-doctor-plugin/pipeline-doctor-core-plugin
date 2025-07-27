@@ -14,12 +14,12 @@ The Pipeline Doctor Plugin Core provides the foundational interfaces and contrac
 **IMPORTANT**: Each plugin depends ONLY on the core plugin and should NOT depend on each other.
 
 ```
-pipeline-doctor-pattern-plugin → pipeline-doctor-core-plugin
-pipeline-doctor-llm-plugin     → pipeline-doctor-core-plugin  
-pipeline-doctor-xxx-plugin     → pipeline-doctor-core-plugin
+pipeline-doctor-patterns-plugin → pipeline-doctor-core-plugin
+pipeline-doctor-llm-plugin      → pipeline-doctor-core-plugin  
+pipeline-doctor-xxx-plugin      → pipeline-doctor-core-plugin
 
 ❌ Plugins should NOT depend on each other:
-pipeline-doctor-pattern-plugin ❌→ pipeline-doctor-llm-plugin
+pipeline-doctor-patterns-plugin ❌→ pipeline-doctor-llm-plugin
 ```
 
 This ensures:

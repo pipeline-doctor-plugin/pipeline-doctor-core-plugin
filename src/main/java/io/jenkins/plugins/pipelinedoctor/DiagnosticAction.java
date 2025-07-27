@@ -2,6 +2,7 @@ package io.jenkins.plugins.pipelinedoctor;
 
 import hudson.model.Action;
 import hudson.model.Run;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -16,12 +17,12 @@ public class DiagnosticAction implements Action {
     private transient Run<?, ?> run;
     
     public DiagnosticAction(List<DiagnosticResult> results) {
-        this.results = results != null ? List.copyOf(results) : Collections.emptyList();
+        this.results = results != null ? Collections.unmodifiableList(new ArrayList<>(results)) : Collections.emptyList();
     }
     
     @Override
     public String getIconFileName() {
-        return "symbol-stethoscope";
+        return "symbol-medkit plugin-ionicons-api";
     }
     
     @Override

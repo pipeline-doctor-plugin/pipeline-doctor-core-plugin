@@ -1,0 +1,10 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+    <l:header />
+    <l:side-panel>
+        <l:tasks>
+            <l:task icon="icon-up icon-md" href="${rootURL}/${it.run.url}" title="${%Back to Build}"/>
+            <l:task icon="icon-document icon-md" href="console" title="${%View Build Log}"/>
+        </l:tasks>
+    </l:side-panel>
+</j:jelly>
